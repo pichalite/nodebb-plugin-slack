@@ -1,6 +1,6 @@
 # NodeBB Slack
 
-NodeBB Plugin for notifying forum administrators of new posts via [Slack](http://slack.com) webhooks.
+NodeBB Plugin for posting new posts via [Slack](http://slack.com) webhooks.
 
 ## Configuration
 
