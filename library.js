@@ -11,7 +11,7 @@
         nconf = module.parent.require('nconf'),
         winston = module.parent.require('winston'),
         async = module.parent.require('async'),
-        SlackClient = require('node-slack'),
+        SlackClient = require('slack-node'),
         slack = null,
 
         constants = Object.freeze({
@@ -25,9 +25,8 @@
     
     var Slack = {
             config: {
-                domain: '',
-                token: '',
-                channel: '',
+                'webhookURL': '',
+                'channel': '',
                 'post:maxlength': '',
                 'slack:categories': ''
             }
@@ -59,7 +58,8 @@
                 }
             }
 
-            slack = new SlackClient(Slack.config['domain'], Slack.config['token'])
+            slack = new SlackClient();
+            slack.setWebhook(Slack.config['webhookURL']);
             console.log('init', Slack.config);
         });
 
@@ -68,12 +68,14 @@
 
     Slack.postSave = function(post) {
         var content = post.content;
-
+        
         async.parallel({
             user: function(callback) {
                 // retrieve user
                 User.getUserData(post.uid, function(err, user) {
-                    if (err) { return callback(err); }
+                    if (err) { 
+                        return callback(err); 
+                    }
                     var data = {
                         username : user.username,
                         email    : user.email,
@@ -100,25 +102,28 @@
                 })  
             }
         }, function(err, data) {
+            
             // trim message based on config option
             var maxContentLength = Slack.config['post:maxlength'] || false
             if (maxContentLength && content.length > maxContentLength) { content = content.substring(0, maxContentLength) + '...'; }
             // message format: <username> posted [<categoryname> : <topicname>]\n <message>
             var message = '<' + data.topic.link + '|[' + data.topic.category + ': ' + data.topic.title + ']>\n' + content;
-            var categories = JSON.parse(Slack.config['slack:categories']) || false;
-             
-            if (!categories || categories.indexOf(data.topic.cid) > -1) {
+            var categories = JSON.stringify(Slack.config['slack:categories']) || false;
+            
+            if (!categories || categories.hasOwnProperty(data.topic.cid)) {
                 // trim message based on config option
                 var maxContentLength = Slack.config['post:maxlength'] || false;
                 if (maxContentLength && content.length > maxContentLength) { content = content.substring(0, maxContentLength) + '...'; }
                 // message format: <username> posted [<categoryname> : <topicname>]\n <message>
                 var message = '<' + data.topic.link + '|[' + data.topic.category + ': ' + data.topic.title + ']>\n' + content;
-  
-                slack.send({
+                
+                slack.webhook({
                     'text'     : message,
                     'channel'  : (Slack.config['channel'] || '#general'),
                     'username' : data.user.username,
                     'icon_url' : data.user.image
+                }, function(err, response) {
+                    console.log(response);
                 });
             }
         });
@@ -134,5 +139,5 @@
     }
 
     module.exports = Slack;
-
+    
 }(module));
