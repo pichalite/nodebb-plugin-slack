@@ -60,7 +60,6 @@
 
             slack = new SlackClient();
             slack.setWebhook(Slack.config['webhookURL']);
-            console.log('init', Slack.config);
         });
 
         callback();
@@ -71,57 +70,29 @@
         
         async.parallel({
             user: function(callback) {
-                // retrieve user
-                User.getUserData(post.uid, function(err, user) {
-                    if (err) { 
-                        return callback(err); 
-                    }
-                    var data = {
-                        username : user.username,
-                        email    : user.email,
-                        image    : user.picture.match(/^\/\//) ? 'http:' + user.picture : user.picture
-                    };
-                    return callback(null, data);
-                })
+                User.getUserFields(post.uid, ['username', 'picture'], callback);  
             },
             topic: function(callback) {
-                // retrieve topic and category
-                Topics.getTopicData(post.tid, function(err, topic) {
-                    if (err) { return callback(err); }
-                    Categories.getCategoryData(topic.cid, function(err, category) {
-                        if (err) { return callback(err); }
-                        var data = {
-                            title     : topic.title,
-                            category  : category.name,
-                            link      : nconf.get('url') + '/topic/' + topic.slug,
-                            timestamp : topic.timestamp,
-                            cid       : topic.cid
-                        };
-                        return callback(null, data);
-                    })
-                })  
+                Topics.getTopicFields(post.tid, ['title', 'slug'], callback);
+            },
+            category: function(callback) {
+                Categories.getCategoryFields(post.cid, ['name'], callback);
             }
         }, function(err, data) {
-            
-            // trim message based on config option
-            var maxContentLength = Slack.config['post:maxlength'] || false
-            if (maxContentLength && content.length > maxContentLength) { content = content.substring(0, maxContentLength) + '...'; }
-            // message format: <username> posted [<categoryname> : <topicname>]\n <message>
-            var message = '<' + data.topic.link + '|[' + data.topic.category + ': ' + data.topic.title + ']>\n' + content;
             var categories = JSON.stringify(Slack.config['slack:categories']) || false;
             
-            if (!categories || categories.hasOwnProperty(data.topic.cid)) {
+            if (!categories || categories.hasOwnProperty(post.cid)) {
                 // trim message based on config option
                 var maxContentLength = Slack.config['post:maxlength'] || false;
                 if (maxContentLength && content.length > maxContentLength) { content = content.substring(0, maxContentLength) + '...'; }
                 // message format: <username> posted [<categoryname> : <topicname>]\n <message>
-                var message = '<' + data.topic.link + '|[' + data.topic.category + ': ' + data.topic.title + ']>\n' + content;
+                var message = '<' + nconf.get('url') + '/topic/' + data.topic.slug + '|[' + data.category.name + ': ' + data.topic.title + ']>\n' + content;
                 
                 slack.webhook({
                     'text'     : message,
                     'channel'  : (Slack.config['channel'] || '#general'),
                     'username' : data.user.username,
-                    'icon_url' : data.user.image
+                    'icon_url' : data.user.picture.match(/^\/\//) ? 'http:' + data.user.picture : data.user.picture
                 }, function(err, response) {
                     console.log(response);
                 });
