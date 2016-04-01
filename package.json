@@ -1,31 +1,31 @@
 {
-    "name": "nodebb-plugin-slack-extended",
-    "version": "0.0.4",
-    "description": "NodeBB Plugin for posting new posts via Slack webhooks",
-    "main": "library.js",
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/pichalite/nodebb-plugin-slack-extended.git"
-    },
-    "keywords": [
-        "nodebb",
-        "plugin",
-        "slack"
-    ],
-    "author": {
-        "name": "Pichalite",
-        "email": "pichalite.com@gmail.com"
-    },
-    "license": "MIT",
-    "bugs": {
-        "url": "http://github.com/pichalite/nodebb-plugin-slack-extended/issues"
-    },
-    "readme": "",
-    "readmeFilename": "README.md",
-    "dependencies": {
-        "slack-node": "0.1.7"
-    },
-    "nbbpm": {
-        "compatibility": "^0.9.0 || ^1.0.0"
-    }
+  "name": "nodebb-plugin-slack-extended",
+  "version": "0.0.5",
+  "description": "NodeBB Plugin for posting new posts via Slack webhooks",
+  "main": "library.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/pichalite/nodebb-plugin-slack-extended.git"
+  },
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "slack"
+  ],
+  "author": {
+    "name": "Pichalite",
+    "email": "pichalite.com@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "http://github.com/pichalite/nodebb-plugin-slack-extended/issues"
+  },
+  "readme": "",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "slack-node": "0.1.7"
+  },
+  "nbbpm": {
+    "compatibility": "^0.9.0 || ^1.0.0"
+  }
 }
