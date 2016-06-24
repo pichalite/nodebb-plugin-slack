@@ -81,7 +81,7 @@
         }, function(err, data) {
             var categories = JSON.parse(Slack.config['slack:categories']);
             
-            if (!categories || categories.indexOf(String(post.cid)) >= 0) {
+            if (!categories || categories.indexOf(post.cid) >= 0) {
                 // trim message based on config option
                 var maxContentLength = Slack.config['post:maxlength'] || false;
                 if (maxContentLength && content.length > maxContentLength) { content = content.substring(0, maxContentLength) + '...'; }
@@ -94,7 +94,9 @@
                     'username' : data.user.username,
                     'icon_url' : data.user.picture.match(/^\/\//) ? 'http:' + data.user.picture : data.user.picture
                 }, function(err, response) {
-                    console.log(response);
+                    if (err) {
+                        console.log(err);
+                    }
                 });
             }
         });
