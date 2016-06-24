@@ -79,9 +79,9 @@
                 Categories.getCategoryFields(post.cid, ['name'], callback);
             }
         }, function(err, data) {
-            var categories = JSON.stringify(Slack.config['slack:categories']) || false;
+            var categories = JSON.parse(Slack.config['slack:categories']);
             
-            if (!categories || categories.hasOwnProperty(post.cid)) {
+            if (!categories || categories.indexOf(String(post.cid))) {
                 // trim message based on config option
                 var maxContentLength = Slack.config['post:maxlength'] || false;
                 if (maxContentLength && content.length > maxContentLength) { content = content.substring(0, maxContentLength) + '...'; }
