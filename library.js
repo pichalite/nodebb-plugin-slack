@@ -81,7 +81,7 @@
         }, function(err, data) {
             var categories = JSON.parse(Slack.config['slack:categories']);
             
-            if (!categories || categories.indexOf(post.cid) >= 0) {
+            if (!categories || categories.indexOf(String(post.cid)) >= 0) {
                 // trim message based on config option
                 var maxContentLength = Slack.config['post:maxlength'] || false;
                 if (maxContentLength && content.length > maxContentLength) { content = content.substring(0, maxContentLength) + '...'; }
