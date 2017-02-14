@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-slack-extended",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "NodeBB Plugin for posting new posts via Slack webhooks",
   "main": "library.js",
   "repository": {
