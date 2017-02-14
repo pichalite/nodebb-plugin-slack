@@ -24,6 +24,10 @@
  						<select name="slack:categories" title="Categories" class="form-control slack-category" multiple>
                          </select>
  					</div>
+ 					<div class="form-group col-xs-12">
+						<label for="topicsOnly">Notify for new topics only</label>
+						<input type="checkbox" name="topicsOnly" title="topicsOnly">
+					</div>
 				</form>
 			</div>
 		</div>
