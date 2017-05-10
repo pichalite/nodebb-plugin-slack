@@ -52,6 +52,7 @@
     },
 
     Slack.postSave = function(post) {
+        post = post.post;
         var topicsOnly = Slack.config['topicsOnly'] || 'off';
         
         if (topicsOnly === 'off' || (topicsOnly === 'on' && post.isMain)) {
