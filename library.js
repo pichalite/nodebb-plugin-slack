@@ -1,12 +1,12 @@
 (function(module) {
     'use strict';
 
-    var User = module.parent.require('./user');
-    var Topics = module.parent.require('./topics');
-    var Categories = module.parent.require('./categories');
-    var meta = module.parent.require('./meta');
-    var nconf = module.parent.require('nconf');
-    var async = module.parent.require('async');
+    var User = require.main.require('./src/user');
+    var Topics = require.main.require('./src/topics');
+    var Categories = require.main.require('./src/categories');
+    var meta = require.main.require('./src/meta');
+    var nconf = require.main.require('nconf');
+    var async = require.main.require('async');
     var SlackClient = require('slack-node');
     var slack = null;
 
