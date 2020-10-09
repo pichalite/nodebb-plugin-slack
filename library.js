@@ -82,7 +82,7 @@
                         'text'     : message,
                         'channel'  : (Slack.config['channel'] || '#general'),
                         'username' : data.user.username,
-                        'icon_url' : data.user.picture.match(/^\/\//) ? 'http:' + data.user.picture : data.user.picture
+                        'icon_url' : data.user.picture && data.user.picture.match(/^\/\//) ? 'http:' + data.user.picture : data.user.picture
                     }, function(err, response) {
                         if (err) {
                             console.log(err);
