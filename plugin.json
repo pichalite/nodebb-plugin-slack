@@ -1,13 +1,25 @@
 {
 	"id": "nodebb-plugin-slack-extended",
 	"name": "Slack Integration",
-	"description": "Posts new posts via Slack webhooks",
+	"description": "Posts new post via Slack webhooks",
 	"url": "https://github.com/pichalite/nodebb-plugin-slack-extended.git",
 	"library": "./library.js",
 	"hooks": [
-		{ "hook": "static:app.load", "method": "init" },
-		{ "hook": "filter:admin.header.build", "method": "adminMenu" },
-		{ "hook": "action:post.save", "method": "postSave"}
+		{
+			"hook": "static:app.load",
+			"method": "init"
+		},
+		{
+			"hook": "filter:admin.header.build",
+			"method": "adminMenu"
+		},
+		{
+			"hook": "action:post.save",
+			"method": "postSave"
+		}
 	],
-    "templates": "./public/templates"
+	"templates": "./public/templates",
+	"modules": {
+		"../admin/plugins/slack.js": "public/admin.js"
+	}
 }
